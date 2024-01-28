@@ -1,1 +1,3 @@
 rm2024-win-*/
+drivers/
+secrets-proxmox.sh
