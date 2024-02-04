@@ -4,27 +4,18 @@ choco install -y openjdk --version=21.0.1
 
 choco install -y maven
 
-Install-ChocolateyZipPackage -PackageName 'openjfx' -Url 'https://download2.gluonhq.com/openjfx/21.0.1/openjfx-21.0.1_windows-x64_bin-sdk.zip' -UnzipLocation "C:\Program Files\Java\" -Checksum "01d111605367bef6025928e8cf66afb9c949036799b7b3d3d51cde63fc4c2e29" -ChecksumType "sha256"
+$ProgressPreference = 'SilentlyContinue'
 
-$ErrorActionPreference = 'Stop';
-$url        = 'https://github.com/gluonhq/scenebuilder/releases/download/21.0.1/SceneBuilder-21.0.1.msi'
+Invoke-WebRequest -Uri "https://download2.gluonhq.com/openjfx/21.0.1/openjfx-21.0.1_windows-x64_bin-sdk.zip" -OutFile "$HOME\Desktop\openjfx-21.0.1_windows-x64_bin-sdk.zip"
 
-$packageArgs = @{
-  packageName   = "scenebuilder"
-  unzipLocation = $toolsDir
-  fileType      = 'msi'
-  url           = $url
+$programFiles = (${env:ProgramFiles}, ${env:ProgramFiles(x86)} -ne $null)[0]
+Expand-Archive -LiteralPath "$HOME\Desktop\openjfx-21.0.1_windows-x64_bin-sdk.zip" -DestinationPath "$programFiles"
 
-  softwareName  = 'SceneBuilder*'
+[System.Environment]::SetEnvironmentVariable('PATH_TO_FX',"$programFiles\javafx-sdk-21.0.1\lib", 'Machine')
 
-  checksum      = 'f59e69237ed2917d1db758fdd16a248784404651ab3a01a802f86eceb995aa0b'
-  checksumType  = 'sha256'
+Invoke-WebRequest -Uri "https://github.com/gluonhq/scenebuilder/releases/download/21.0.1/SceneBuilder-21.0.1.msi" -OutFile "$($env:TEMP)\SceneBuilder-21.0.1.msi"
 
-  silentArgs    = "/qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`""
-  validExitCodes= @(0)
-}
-
-Install-ChocolateyPackage @packageArgs
+Start-Process msiexec.exe -Wait -ArgumentList "/I $($env:TEMP)\SceneBuilder-21.0.1.msi /qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`""
 
 choco install -y mysql
 
@@ -35,3 +26,9 @@ choco install -y sql-server-management-studio
 choco install -y intellijidea-community
 
 choco install visualstudio2022community -y --allWorkloads --includeRecommended
+
+choco install vscode -y
+
+Copy-Item "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Server Tools 19\SQL Server Management Studio 19.lnk" "$HOME\Desktop"
+
+Copy-Item "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2022.lnk" "$HOME\Desktop"
