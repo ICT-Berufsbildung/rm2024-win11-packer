@@ -5,6 +5,10 @@ packer {
       version = "1.1.6"
       source  = "github.com/hashicorp/proxmox"
     }
+    amazon = {
+      source  = "github.com/hashicorp/amazon"
+      version = "~> 1"
+    }
   }
 }
 
@@ -47,4 +51,15 @@ build {
   provisioner "powershell" {
     scripts = ["./scripts/provision-skill09-tools.ps1"]
   }
+
+  provisioner "powershell" {
+    use_pwsh = true
+    script   = "./scripts/eject-media.ps1"
+  }
+
+  provisioner "powershell" {
+    use_pwsh = true
+    script   = "./scripts/optimize.ps1"
+  }
+
 }

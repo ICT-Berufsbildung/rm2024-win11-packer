@@ -27,6 +27,10 @@ choco install -y intellijidea-community
 
 choco install visualstudio2022community -y --allWorkloads --includeRecommended
 
+choco install visualstudio2022-workload-manageddesktop -y
+
+choco install notepadplusplus -y
+
 choco install vscode -y
 
 Copy-Item "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Server Tools 19\SQL Server Management Studio 19.lnk" "$HOME\Desktop"
