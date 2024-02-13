@@ -33,6 +33,8 @@ choco install notepadplusplus -y
 
 choco install vscode -y
 
+choco install dd --pre -y
+
 Copy-Item "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Server Tools 19\SQL Server Management Studio 19.lnk" "$HOME\Desktop"
 
 Copy-Item "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2022.lnk" "$HOME\Desktop"
