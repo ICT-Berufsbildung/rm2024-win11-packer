@@ -43,7 +43,7 @@ Copy-Item "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 20
 $principal = New-ScheduledTaskPrincipal -UserId SYSTEM -LogonType ServiceAccount -RunLevel Highest
 $def = New-ScheduledTask -Trigger $trigger -Principal $principal
 $options = New-ScheduledJobOption -StartIfOnBattery  -RunElevated;
-$psJobsPathInScheduler = "\Microsoft\Windows\PowerShell\ScheduledJobs";
+$psJobsPathInScheduler = "\";
 Register-ScheduledJob -Name fio -Trigger $trigger -ScriptBlock {
   & C:\ProgramData\chocolatey\bin\fio.exe --filename=\\.\PHYSICALDRIVE0  --rw=read --bs=128k --iodepth=32 --direct=1 --name=volume-initialize
 }
