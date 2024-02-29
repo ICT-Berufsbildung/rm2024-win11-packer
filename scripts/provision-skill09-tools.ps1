@@ -40,11 +40,14 @@ Copy-Item "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Se
 Copy-Item "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2022.lnk" "$HOME\Desktop"
 
 # EBS Initilization
-$principal = New-ScheduledTaskPrincipal -UserId SYSTEM -LogonType ServiceAccount -RunLevel Highest
-$def = New-ScheduledTask -Trigger $trigger -Principal $principal
+$principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+$trigger = New-JobTrigger -AtStartup
 $options = New-ScheduledJobOption -StartIfOnBattery  -RunElevated;
 $psJobsPathInScheduler = "\";
 Register-ScheduledJob -Name fio -Trigger $trigger -ScriptBlock {
   & C:\ProgramData\chocolatey\bin\fio.exe --filename=\\.\PHYSICALDRIVE0  --rw=read --bs=128k --iodepth=32 --direct=1 --name=volume-initialize
 }
-Set-ScheduledTask -TaskPath $psJobsPathInScheduler -TaskName fio -Principal $principal
+$psJobsPathInScheduler = "\Microsoft\Windows\PowerShell\ScheduledJobs";
+$settings = New-ScheduledTaskSettingsSet
+$settings.Priority = 4
+Set-ScheduledTask -TaskPath $psJobsPathInScheduler -TaskName fio -Principal $principal -Settings $settings

@@ -35,7 +35,7 @@ source "proxmox-clone" "skill09-vm" {
   http_directory    = "httpdir"
   ssh_password = "Go4Regio24"
   ssh_timeout  = "1h"
-  ssh_username = "vagrant"
+  ssh_username = "regio"
 }
 
 build {
