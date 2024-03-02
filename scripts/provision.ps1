@@ -58,13 +58,13 @@ if ($systemVendor -eq 'QEMU') {
     throw "Cannot install Guest Additions: Unsupported system ($systemVendor)."
 }
 
-Write-Host 'Setting the vagrant account properties...'
+Write-Host 'Setting the regio account properties...'
 # see the ADS_USER_FLAG_ENUM enumeration at https://msdn.microsoft.com/en-us/library/aa772300(v=vs.85).aspx
 $AdsScript              = 0x00001
 $AdsAccountDisable      = 0x00002
 $AdsNormalAccount       = 0x00200
 $AdsDontExpirePassword  = 0x10000
-$account = [ADSI]'WinNT://./vagrant'
+$account = [ADSI]'WinNT://./regio'
 $account.Userflags = $AdsNormalAccount -bor $AdsDontExpirePassword
 $account.SetInfo()
 

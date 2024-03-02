@@ -131,10 +131,10 @@
                             <Value>Go4Regio24</Value>
                             <PlainText>true</PlainText>
                         </Password>
-                        <Description>Vagrant</Description>
-                        <DisplayName>Vagrant</DisplayName>
+                        <Description>regio</Description>
+                        <DisplayName>regio</DisplayName>
                         <Group>Administrators</Group>
-                        <Name>vagrant</Name>
+                        <Name>regio</Name>
                     </LocalAccount>
                 </LocalAccounts>
             </UserAccounts>
@@ -144,7 +144,8 @@
                     <PlainText>true</PlainText>
                 </Password>
                 <Enabled>true</Enabled>
-                <Username>vagrant</Username>
+                <Username>regio</Username>
+                <LogonCount>200</LogonCount>
             </AutoLogon>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
