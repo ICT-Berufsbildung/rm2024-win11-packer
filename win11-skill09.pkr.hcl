@@ -22,6 +22,10 @@ variable "proxmox_node" {
   default = env("PROXMOX_NODE")
 }
 
+locals {
+  output_directory = "rm2024-win11-exam-${legacy_isotime("20060102")}"
+}
+
 source "proxmox-clone" "skill09-vm" {
   insecure_skip_tls_verify = true
   node              = var.proxmox_node
@@ -38,11 +42,34 @@ source "proxmox-clone" "skill09-vm" {
   ssh_username = "regio"
 }
 
+
+source "vmware-vmx" "skill09-vm" {
+  source_path       = "rm2024-win-20240302_1620/rm2024-win11-base.vmx"
+  format            = "ovf"
+  communicator      = "ssh"
+  display_name      = "${var.name}"
+  output_directory  = "${local.output_directory}"
+  shutdown_command  = "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\""
+  vm_name           = "${var.name}"
+  ssh_password = "Go4Regio24"
+  ssh_timeout  = "1h"
+  ssh_username = "regio"
+}
+
 build {
-  sources = ["source.proxmox-clone.skill09-vm"]
+  sources = ["source.proxmox-clone.skill09-vm", "source.vmware-vmx.skill09-vm"]
 
   provisioner "powershell" {
-    scripts = ["./scripts/provision-chocolatey.ps1"]
+    only = ["vmware-vmx.skill09-vm"]
+    script = "./scripts/provision-vmware-tools.ps1"
+  }
+  provisioner "windows-restart" {
+    only = ["vmware-vmx.skill09-vm"]
+  }
+
+  provisioner "powershell" {
+    use_pwsh = true
+    script = "./scripts/provision-chocolatey.ps1"
   }
 
   provisioner "windows-restart" {
@@ -53,13 +80,27 @@ build {
   }
 
   provisioner "powershell" {
-    use_pwsh = true
-    script   = "./scripts/eject-media.ps1"
+    only = ["proxmox-clone.skill09-vm"]
+    script = "./scripts/provision-fio.ps1"
   }
 
   provisioner "powershell" {
-    use_pwsh = true
-    script   = "./scripts/optimize.ps1"
+    scripts = [
+      "./scripts/eject-media.ps1",
+      "./scripts/optimize.ps1"
+    ]
   }
 
+  provisioner "powershell" {
+    only = ["vmware-vmx.skill09-vm"]
+    script = "scripts/vmware-shrink-disk.ps1"
+  }
+
+  post-processors {
+    post-processor "checksum" {
+      only = ["vmware-vmx.skill09-vm"]
+      checksum_types  = ["sha256"]
+      output          = "${local.output_directory}/${var.name}_{{.ChecksumType}}.checksum"
+    }
+  }
 }

@@ -38,10 +38,6 @@ variable "proxmox_node" {
   default = env("PROXMOX_NODE")
 }
 
-locals {
-  output_directory = "rm2024-win-${legacy_isotime("20060102_1504")}"
-}
-
 source "proxmox-iso" "base" {
   insecure_skip_tls_verify = true
   node              = var.proxmox_node
@@ -123,7 +119,7 @@ source "vmware-iso" "base" {
   disk_size         = "61440"
   disk_type_id      = "0"
   display_name      = "${var.name}"
-  output_directory  = "${local.output_directory}"
+  output_directory  = "./${var.name}"
   floppy_files      = [
       "./scripts/win-11-bios/Autounattend.xml",
       "scripts/provision-autounattend.ps1",
@@ -151,12 +147,18 @@ source "vmware-iso" "base" {
   ssh_password = "Go4Regio24"
   ssh_timeout  = "1h"
   ssh_username = "regio"
-
-  tools_upload_flavor = "windows"
 }
 
 build {
   sources = ["source.proxmox-iso.base", "source.vmware-iso.base"]
+
+  provisioner "powershell" {
+    only = ["vmware-iso.base"]
+    script = "./scripts/provision-vmware-tools.ps1"
+  }
+  provisioner "windows-restart" {
+    only = ["vmware-iso.base"]
+  }
 
   provisioner "powershell" {
     use_pwsh = true
