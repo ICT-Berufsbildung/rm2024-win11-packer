@@ -30,7 +30,7 @@ variable "iso_url_local" {
 
 variable "name" {
   type    = string
-  default = "rm2024-win11-base"
+  default = "rm2025-win11-base"
 }
 
 variable "proxmox_node" {
@@ -104,7 +104,7 @@ source "proxmox-iso" "base" {
   http_directory    = "httpdir"
   iso_checksum      = "${var.iso_checksum}"
   iso_file           = "${var.iso_url}"
-  ssh_password = "Go4Regio24"
+  ssh_password = "Go4Regio25"
   ssh_timeout  = "1h"
   ssh_username = "regio"
   boot_wait         = "1s"
@@ -119,7 +119,7 @@ source "vmware-iso" "base" {
   disk_size         = "61440"
   disk_type_id      = "0"
   display_name      = "${var.name}"
-  output_directory  = "./${var.name}"
+  output_directory  = "./output/${var.name}"
   floppy_files      = [
       "./scripts/win-11-bios/Autounattend.xml",
       "scripts/provision-autounattend.ps1",
@@ -144,7 +144,7 @@ source "vmware-iso" "base" {
   }
   vnc_port_max   = 5980
   vnc_port_min   = 5900
-  ssh_password = "Go4Regio24"
+  ssh_password = "Go4Regio25"
   ssh_timeout  = "1h"
   ssh_username = "regio"
 }

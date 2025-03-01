@@ -1,3 +1,7 @@
+Invoke-WebRequest -Uri $Env:PACKER_HTTP_ADDR/project_files_skill_9.zip -OutFile "$HOME\Desktop\project_files_skill_9.zip"
+
+choco install -y 7zip
+
 choco install -y git
 
 choco install -y openjdk --version=21.0.1
@@ -19,6 +23,8 @@ Start-Process msiexec.exe -Wait -ArgumentList "/I $($env:TEMP)\SceneBuilder-21.0
 
 choco install -y mysql
 
+choco install -y mysql.workbench
+
 choco install -y sql-server-express
 
 choco install -y sql-server-management-studio
@@ -32,8 +38,6 @@ choco install visualstudio2022-workload-manageddesktop -y
 choco install notepadplusplus -y
 
 choco install vscode -y
-
-choco install fio -y
 
 Copy-Item "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Server Tools 19\SQL Server Management Studio 19.lnk" "$HOME\Desktop"
 

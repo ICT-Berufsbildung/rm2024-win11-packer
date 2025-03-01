@@ -122,13 +122,13 @@
             <TimeZone>UTC</TimeZone>
             <UserAccounts>
                 <AdministratorPassword>
-                    <Value>Go4Regio24</Value>
+                    <Value>Go4Regio25</Value>
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
                 <LocalAccounts>
                     <LocalAccount wcm:action="add">
                         <Password>
-                            <Value>Go4Regio24</Value>
+                            <Value>Go4Regio25</Value>
                             <PlainText>true</PlainText>
                         </Password>
                         <Description>regio</Description>
@@ -140,7 +140,7 @@
             </UserAccounts>
             <AutoLogon>
                 <Password>
-                    <Value>Go4Regio24</Value>
+                    <Value>Go4Regio25</Value>
                     <PlainText>true</PlainText>
                 </Password>
                 <Enabled>true</Enabled>

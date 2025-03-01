@@ -38,7 +38,7 @@ if (!( Test-Path "C:\Windows\Temp\7z1900-x64.msi")) {
       }
   
       cmd /c "C:\PROGRA~1\7-Zip\7z.exe" x "C:\Windows\Temp\windows.iso" -oC:\Windows\Temp\VMWare
-      cmd /c C:\Windows\Temp\VMWare\setup.exe /S /v"/qn REBOOT=R\"
+      cmd /c C:\Windows\Temp\VMWare\setup.exe /S /v"/qn REBOOT=ReallySuppress\"
   
       Remove-Item -Force "C:\Windows\Temp\vmware-tools.tar"
       Remove-Item -Force "C:\Windows\Temp\windows.iso"

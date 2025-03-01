@@ -1,3 +1,4 @@
-rm2024-win-*/
+rm2025-win-*/
 drivers/
 secrets-proxmox.sh
+output/
